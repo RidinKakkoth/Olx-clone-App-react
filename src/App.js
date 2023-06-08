@@ -17,7 +17,7 @@ import View from './Components/View/View';
 
 function App() {
   const {user,setUser}=useContext(AuthContext)
-  const {firebase}=useContext(FirebaseContext)
+  const {firebaseApp}=useContext(FirebaseContext)
   useEffect(()=>{
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -36,8 +36,8 @@ function App() {
   })
   return (
     <div>
-      <Post>
 
+      <Post>
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
@@ -47,8 +47,8 @@ function App() {
           <Route path='/view' element={<View />} />
         </Routes>
       </Router>
-
       </Post>
+
     </div>
   );
 }

@@ -1,35 +1,59 @@
 import React,{useEffect,useState,useContext} from 'react';
-import PostContext from '../../store/PostContext'
+
 import './View.css';
 import { FirebaseContext } from '../../store/Context';
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { PostContext } from '../../store/PostContext';
+// import { firestore } from '../../firebase/config';
 
 
 function View() {
 
-  const[userDetails,setUserDetails]=useState()
-  const {postDetails}=useContext(PostContext)
-  const {firebase}=useContext(FirebaseContext)
+  const[userDetails,setUserDetails]=useState("")
+  const {postDetails}=useContext(PostContext)  //post details including user id passed through context
+  const {firestore}=useContext(FirebaseContext)
+
+  useEffect(()=>{
+
+
+    //get user details to show in seller details of product using user id ref
+
+    const fetchData = async () => {
+      if (postDetails?.userId) {
+        const { userId } = postDetails;
+        const queryDetails = query(collection(firestore, "user"), where("id", "==", userId));
+        const querySnapshot = await getDocs(queryDetails);
+        querySnapshot.forEach((doc) => {
+          setUserDetails(doc.data());
+        });
+      }
+    };
+    
+console.log("hiiiiiiiiiiiiiiiiii");
+    fetchData();
+  },[])
 
   return (
+
     <div className="viewParentDiv">
       <div className="imageShowDiv">
         <img
-          src="../../../Images/R15V3.jpg"
+          src={postDetails?postDetails.imageUrl:""}
           alt=""
         />
       </div>
       <div className="rightSection">
         <div className="productDetails">
-          <p>&#x20B9; 250000 </p>
-          <span>YAMAHA R15V3</span>
-          <p>Two Wheeler</p>
-          <span>Tue May 04 2021</span>
+          <p>&#x20B9; {postDetails?postDetails.price:""} </p>
+          <span>{postDetails?postDetails.name:""}</span>
+          <p>{postDetails?postDetails.category:""}</p>
+          <span>{postDetails?postDetails.createdAt:""}</span>
         </div>
-        <div className="contactDetails">
+        {userDetails&& <div className="contactDetails">
           <p>Seller details</p>
-          <p>No name</p>
-          <p>1234567890</p>
-        </div>
+          <p>{userDetails.username}</p>
+          <p>{userDetails.phone}</p>
+        </div>}
       </div>
     </div>
   );
