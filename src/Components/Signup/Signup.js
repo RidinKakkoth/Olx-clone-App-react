@@ -3,7 +3,7 @@ import Logo from '../../olx-logo.png';
 import './Signup.css';
 import { FirebaseContext } from '../../store/Context';
 import { useNavigate } from 'react-router';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,updateProfile  } from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
 
 
@@ -32,31 +32,39 @@ export default function Signup() {
     setUsername(usernameRef.current.value)
 
     const auth = getAuth(firebaseApp);
-
     createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
-      .then((userCredential) => {
-
-        // Signed up 
-        // const user = userCredential.user;
-
-        addDoc(collection(db,"user"),{
-          id:userCredential.user.uid,
-          email,
-          password,
-          phone,
-          username
-
-        }).then(()=>{
-            navigate('/login')
-        })
-        // ...
+    .then((userCredential) => {
+      const user = userCredential.user;
+      
+      updateProfile(user, {
+        displayName: username
       })
-      .catch((err) => {
-        console.log(err.code);
-        console.log(err.message);
-      });
-    
-  };
+        .then(() => {
+          addDoc(collection(db, "user"), {
+            id: userCredential.user.uid,
+            email,
+            password,
+            phone,
+            username
+          })
+            .then(() => {
+              navigate('/login');
+            })
+            .catch((err) => {
+              console.log(err.code);
+              console.log(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.code);
+          console.log(err.message);
+        });
+    })
+    .catch((err) => {
+      console.log(err.code);
+      console.log(err.message);
+    });
+    };
   
 
 
@@ -124,3 +132,13 @@ export default function Signup() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
