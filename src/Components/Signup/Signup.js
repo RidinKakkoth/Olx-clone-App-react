@@ -19,7 +19,7 @@ export default function Signup() {
   const emailRef=useRef(null)
   const phoneRef=useRef(null)
   const passwordRef=useRef(null)
-  const {firebaseApp,db}=useContext(FirebaseContext)
+  const {firebaseApp,firestore}=useContext(FirebaseContext)
   
 
 
@@ -40,7 +40,7 @@ export default function Signup() {
         displayName: username
       })
         .then(() => {
-          addDoc(collection(db, "user"), {
+          addDoc(collection(firestore, "user"), {
             id: userCredential.user.uid,
             email,
             password,

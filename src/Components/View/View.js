@@ -1,7 +1,15 @@
-import React from 'react';
-
+import React,{useEffect,useState,useContext} from 'react';
+import PostContext from '../../store/PostContext'
 import './View.css';
+import { FirebaseContext } from '../../store/Context';
+
+
 function View() {
+
+  const[userDetails,setUserDetails]=useState()
+  const {postDetails}=useContext(PostContext)
+  const {firebase}=useContext(FirebaseContext)
+
   return (
     <div className="viewParentDiv">
       <div className="imageShowDiv">
