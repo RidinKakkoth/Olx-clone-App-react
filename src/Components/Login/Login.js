@@ -7,8 +7,8 @@ import Logo from '../../olx-logo.png';
 import './Login.css';
 
 function Login() {
-  const[email,setEmail]=useState('')
-  const[password,setPassword]=useState('')
+  // const[email,setEmail]=useState('')
+  // const[password,setPassword]=useState('')
   const emailRef=useRef(null)
   const passwordRef=useRef(null)
   const navigate=useNavigate()
@@ -61,7 +61,7 @@ function Login() {
           <br />
           <button>Login</button>
         </form>
-        <a>Signup</a>
+        <a onClick={()=>{navigate('/signup')}}>Signup</a>
       </div>
     </div>
   );

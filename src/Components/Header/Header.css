@@ -164,5 +164,8 @@
 }
 
 .logout{
+  cursor: pointer;  cursor: pointer;
+}
+.header-login{
   cursor: pointer;
 }

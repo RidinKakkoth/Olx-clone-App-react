@@ -15,6 +15,10 @@ export default function Signup() {
   const [email,setEmail]=useState("")
   const [phone,setPhone]=useState("")
   const [password,setPassword]=useState("")
+
+  const [error, setError] = useState(null);
+
+
   const usernameRef=useRef(null)
   const emailRef=useRef(null)
   const phoneRef=useRef(null)
@@ -30,6 +34,8 @@ export default function Signup() {
     setPassword(passwordRef.current.value)
     setPhone(phoneRef.current.value)
     setUsername(usernameRef.current.value)
+
+
 
     const auth = getAuth(firebaseApp);
     createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
@@ -63,6 +69,7 @@ export default function Signup() {
     .catch((err) => {
       console.log(err.code);
       console.log(err.message);
+      setError(err.message)
     });
     };
   
@@ -126,8 +133,10 @@ export default function Signup() {
           <br />
           <button >Signup</button>
         </form>
-        {/* <a href=''>Login</a> */}
-        <button>Login</button>
+        <a onClick={()=>{navigate('/login')}}>Login</a>
+
+        {/* <button>Login</button> */}
+      { error &&<p className="error">{error}ddddddd</p>}
       </div>
     </div>
   );
